@@ -13,9 +13,9 @@ public class UserDao {
         for (User u : users)
             if (u.getUsername().equals(user.getUsername()))
                 return null;
-        User newUser = new User(user.getUsername(), user.getPassword(), LocalDate.now());
-        users.add(newUser);
-        return newUser;
+        user.setJoined(LocalDate.now());
+        users.add(user);
+        return user;
     }
     
     public User authenticate(User user) {

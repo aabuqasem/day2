@@ -2,6 +2,7 @@
 package edu.acc.j2ee.hubbub;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +35,7 @@ public class FrontController extends HttpServlet {
         if (request.getMethod().equalsIgnoreCase("GET"))
             return "login";
         else {
-            UserDao users = getUserDao();
+            DbUserDao users = getUserDao();
             User user = new User(
                     request.getParameter("username"),
                     request.getParameter("password"),
@@ -71,7 +72,7 @@ public class FrontController extends HttpServlet {
                 request.setAttribute("flash", "Password fields don't match");
                 return "join";
             }              
-            UserDao users = getUserDao();
+            DbUserDao users = getUserDao();
             User user = new User(
                     request.getParameter("username"),
                     request.getParameter("password1"),
@@ -94,7 +95,7 @@ public class FrontController extends HttpServlet {
     }
     
     private String timeline(HttpServletRequest request) {
-        PostDao dao = getPostDao();
+        DbPostDao dao = getPostDao();
         List<Post> posts = dao.getAllPosts(0, 10);
         request.setAttribute("posts", posts);
         return "timeline";
@@ -106,25 +107,25 @@ public class FrontController extends HttpServlet {
         if (request.getMethod().equalsIgnoreCase("GET"))
             return "post";
         else {
-            PostDao posts = getPostDao();
-            Post post = new Post(null, request.getParameter("content"), null);
+            DbPostDao posts = getPostDao();
+            User author = (User)request.getSession().getAttribute("user");
+            Post post = new Post(author, request.getParameter("content"), LocalDateTime.now(), 0);
             post.validate(false);
             if (post.hasErrors()) {
                 request.setAttribute("errors", post.getErrors());
                 return "post";
             }
-            User author = (User)request.getSession().getAttribute("user");
-            posts.post(author, post.getContent());
+            posts.post(post);
             return timeline(request);
         }
     }
     
-    private UserDao getUserDao() {
-        return (UserDao)getServletContext().getAttribute("users");
+    private DbUserDao getUserDao() {
+        return (DbUserDao)getServletContext().getAttribute("users");
     }
     
-    private PostDao getPostDao() {
-        return (PostDao)getServletContext().getAttribute("posts");
+    private DbPostDao getPostDao() {
+        return (DbPostDao)getServletContext().getAttribute("posts");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

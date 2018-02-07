@@ -1,6 +1,5 @@
 package edu.acc.j2ee.hubbub;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,8 +10,7 @@ public class PostDao {
     
     public PostDao() {}
     
-    public Post post(User author, String content) {
-        Post post = new Post(author, content, LocalDateTime.now());
+    public Post post(Post post) {
         posts.add(post);
         return post;
     }
@@ -26,4 +24,5 @@ public class PostDao {
                 .limit(length)
                 .collect(Collectors.toList());
     }
+
 }

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <context-param>
+        <param-name>db.url</param-name>
+        <param-value>jdbc:derby://localhost:1527/hubbub</param-value>
+    </context-param>
+    <context-param>
+        <param-name>db.user</param-name>
+        <param-value>javauser</param-value>
+    </context-param>
+    <context-param>
+        <param-name>db.pass</param-name>
+        <param-value>javauser</param-value>
+    </context-param>
     <listener>
         <description>ServletContextListener</description>
         <listener-class>edu.acc.j2ee.hubbub.StartupListener</listener-class>
