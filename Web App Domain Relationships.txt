@@ -1,0 +1,24 @@
+Listener
+	Creates the database connection
+	Created DAOs for the domain classes
+	Provides the connection to DAO constructors
+	Puts DAOs in context attributes
+	
+Front Controller
+	Uses requests to select features
+	Accesses DAO methods to service those features
+	Dictates the CRUD methods the DAOs must provide
+	
+DAOs
+	Store the connection for statement creation
+	Creates statements and result sets per service
+	Marshal DTOs into entities for insert/update (ORM)
+	Marshal result sets into domain objects for queries (ORM)
+	
+DTOs
+	Partially initialized domain classes
+	Carry request parameters into DAO methods
+	Become full entites when DAO completes initialization
+	
+	
+	
