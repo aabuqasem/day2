@@ -1,0 +1,21 @@
+.flash { color: red; }
+.post {
+    width: 50%;
+    background-color: oldlace;
+    margin: 8px;
+    padding: 8px;
+    list-style: none;
+    border: 1px solid seagreen;
+}
+.author {
+    font-size: larger;
+}
+.content {
+    font-family: sans-serif;
+    font-size: 1.5em;
+    padding: 8px;
+}
+.postdate {
+    font-style: italic;
+}
+li { margin: 10px; }

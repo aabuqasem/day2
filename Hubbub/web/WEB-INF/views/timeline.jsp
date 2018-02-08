@@ -3,6 +3,7 @@
 <html>
     <head>
         <title>Hubbub&trade; Timeline</title>
+        <link rel="stylesheet" type="text/css" href="styles/hubbub.css"/>
     </head>
     <body>
         <div class="masthead">
@@ -28,7 +29,7 @@
         <h2>Here's what our users are hackin' on:</h2>
         <ul>
             <c:forEach var="post" items="${posts}">
-                <li>
+                <li class="post">
                     Posted by
                     <span class="author" title="${post.author.joined}">
                         <c:choose>

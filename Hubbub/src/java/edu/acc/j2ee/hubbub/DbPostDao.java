@@ -50,6 +50,7 @@ public class DbPostDao {
                 post.setContent(rs.getString("content"));
                 post.setPosted(rs.getTimestamp("posted").toLocalDateTime());
                 post.setId(rs.getInt("id"));
+                posts.add(post);
             }
             return posts;
         }

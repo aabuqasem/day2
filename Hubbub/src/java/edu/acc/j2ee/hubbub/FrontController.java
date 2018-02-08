@@ -22,7 +22,7 @@ public class FrontController extends HttpServlet {
             case "join": destination = join(request); break;
             case "logout": destination = logout(request); break;
             case "post": destination = post(request); break;
-            default:
+            default: destination = timeline(request); break;
         }
         
         request.getRequestDispatcher("/WEB-INF/views/" + destination + ".jsp")
