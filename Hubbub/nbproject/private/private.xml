@@ -2,12 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/javauser/Documents/NetBeansProjects/Hubbub/web/WEB-INF/views/post.jsp</file>
-            <file>file:/C:/Users/javauser/Documents/NetBeansProjects/Hubbub/src/java/edu/acc/j2ee/hubbub/FrontController.java</file>
-            <file>file:/C:/Users/javauser/Documents/NetBeansProjects/Hubbub/web/WEB-INF/views/login.jsp</file>
-            <file>file:/C:/Users/javauser/Documents/NetBeansProjects/Hubbub/web/WEB-INF/views/join.jsp</file>
-            <file>file:/C:/Users/javauser/Documents/NetBeansProjects/Hubbub/web/WEB-INF/views/timeline.jsp</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -1,0 +1,70 @@
+Write a Java application that presents a console-based UI:
+
+Welcome to the GradeBook - Grades recorded: 0
+	1) Enter a student's grade
+	2) View students' grades
+	3) Delete a student's grade
+	4) Display minimum, maximum, and average grades
+	5) Quit
+	
+Data entered by this application should persist when the JVM exits;
+
+Selecting option 1:
+
+Enter the student's name:  Timmy
+Enter the student's grade: 3.2
+
+Welcome to the GradeBook - Grades recorded: 1
+	1) Enter a student's grade
+	2) View students' grades
+	3) Delete a student's grade
+	4) Display minimum, maximum, and average grades
+	5) Quit
+	
+Selecting option 2:
+
+Entry | Student       | Grade 
+------+---------------+-------
+1     | Timmy         | 3.2
+
+Welcome to the GradeBook - Grades recorded: 1
+	1) Enter a student's grade
+	2) View students' grades
+	3) Delete a student's grade
+	4) Display minimum, maximum, and average grades
+	5) Quit
+	
+Selecting option 3:
+
+Which entry should be deleted? 2
+There is no such entry.
+
+Entry | Student       | Grade 
+------+---------------+-------
+1     | Timmy         | 3.2
+
+Which entry should be deleted? 1
+Entry 1 deleted.
+
+Welcome to the GradeBook - Grades recorded: 0
+	1) Enter a student's grade
+	2) View students' grades
+	3) Delete a student's grade
+	4) Display minimum, maximum, and average grades
+	5) Quit
+
+Selecting option 4 after some grades have been entered:
+
+Timmy has the maximum grade of 3.8
+Jess has the minimum grade of 2.1
+The average grade is 3.05
+
+Welcome to the GradeBook - Grades recorded: 0
+	1) Enter a student's grade
+	2) View students' grades
+	3) Delete a student's grade
+	4) Display minimum, maximum, and average grades
+	5) Quit
+	
+Selecting option 5 quits the app, but any saved grades remain.
+
