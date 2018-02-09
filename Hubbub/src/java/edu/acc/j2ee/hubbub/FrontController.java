@@ -22,6 +22,8 @@ public class FrontController extends HttpServlet {
             case "join": destination = join(request); break;
             case "logout": destination = logout(request); break;
             case "post": destination = post(request); break;
+            case "search": destination = search(request); break;
+            case "ticker": destination = ticker(request); break;
             default: destination = timeline(request); break;
         }
         
@@ -72,22 +74,42 @@ public class FrontController extends HttpServlet {
                 request.setAttribute("flash", "Password fields don't match");
                 return "join";
             }              
-            DbUserDao users = getUserDao();
             User user = new User(
                     request.getParameter("username"),
                     request.getParameter("password1"),
                     null
             );
             user.validate(false);
-            if (user.hasErrors()) {
-                request.setAttribute("errors", user.getErrors());
+            Profile profile = new Profile(
+                null,
+                request.getParameter("firstName"),
+                request.getParameter("lastName"),
+                request.getParameter("email"),
+                request.getParameter("biography"),
+                0
+            );
+            profile.validate(false);
+            if (user.hasErrors() || profile.hasErrors()) {
+                request.setAttribute("userErrors", user.getErrors());
+                request.setAttribute("profileErrors", profile.getErrors());
+                request.setAttribute("user", user);
+                request.setAttribute("profile", profile);
                 return "join";
             }
+            
+            DbUserDao users = getUserDao();
             user = users.register(user);
             if (user == null) {
                 request.setAttribute("flash", "That username is unavailable");
                 return "join";
             } else {
+                DbProfileDao profiles = getProfileDao();
+                profile.setOwner(user);
+                profile = profiles.add(profile);
+                if (profile == null) {
+                    request.setAttribute("flash", "Unable to save your profile");
+                    return timeline(request);
+                }
                 request.getSession().setAttribute("user", user);
                 return timeline(request);                
             }
@@ -119,6 +141,22 @@ public class FrontController extends HttpServlet {
             return timeline(request);
         }
     }
+
+    private String search(HttpServletRequest request) {
+        if (request.getSession().getAttribute("user") == null)
+            return timeline(request);
+        String search = request.getParameter("search");
+        search = search
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("'", "&apos;")
+                .replace("\"", "&quo;");
+        String[] terms = search.split(" ");
+        List<Post> results = getPostDao().search(terms);
+        request.setAttribute("results", results);
+        request.setAttribute("search", search);
+        return "search";
+    } 
     
     private DbUserDao getUserDao() {
         return (DbUserDao)getServletContext().getAttribute("users");
@@ -126,6 +164,10 @@ public class FrontController extends HttpServlet {
     
     private DbPostDao getPostDao() {
         return (DbPostDao)getServletContext().getAttribute("posts");
+    }
+    
+    private DbProfileDao getProfileDao() {
+        return (DbProfileDao)getServletContext().getAttribute("profiles");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -166,5 +208,20 @@ public class FrontController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String ticker(HttpServletRequest request) {
+        if (request.getSession().getAttribute("user") == null)
+            return timeline(request);
+        String whoFor = request.getParameter("for");
+        if (!whoFor.matches(User.USER_PATTERN)) {
+            request.setAttribute("flash", "No such Ticker owner");
+            return timeline(request);
+        }
+        List<Post> posts = getPostDao().getPostsByUsername(whoFor);
+        request.setAttribute("posts", posts);
+        request.setAttribute("for", whoFor);
+        return "ticker";
+     }
+
 
 }

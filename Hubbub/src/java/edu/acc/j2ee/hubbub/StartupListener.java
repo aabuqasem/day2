@@ -27,8 +27,10 @@ public class StartupListener implements ServletContextListener {
             Connection conn = DriverManager.getConnection(url, user, pass);
             DbUserDao users = new DbUserDao(conn);
             DbPostDao posts = new DbPostDao(conn, users);
+            DbProfileDao profiles = new DbProfileDao(conn, users);
             sce.getServletContext().setAttribute("users", users);
             sce.getServletContext().setAttribute("posts", posts);
+            sce.getServletContext().setAttribute("profiles", profiles);
         } catch (SQLException sqle) {
             throw new RuntimeException(sqle);
         }

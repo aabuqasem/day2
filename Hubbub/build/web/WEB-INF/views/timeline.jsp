@@ -9,6 +9,7 @@
         <div class="masthead">
             <img src="images/hubbub-logo.png"/>
         </div>
+        <h2 class="flash">${flash}</h2>
         <h1>Welcome to Hubbub&trade;
             <c:if test="${not empty user}">, ${user.username}</c:if>
         </h1>
@@ -16,6 +17,13 @@
             <c:when test="${not empty user}">
                 <a href="main?action=post">Post Yer Feelin's</a> |
                 <a href="main?action=logout">Log out of Hubbub</a>
+                <p>
+                    <form method="GET" action="main">
+                        <input type="hidden" name="action" value="search"/>
+                        Search: <input type="text" name="search" required/>
+                        <input type="submit" value="Find Terms"/>
+                    </form>
+                </p>
             </c:when>
             <c:otherwise>
                 <a href="main?action=login">
@@ -34,7 +42,7 @@
                     <span class="author" title="${post.author.joined}">
                         <c:choose>
                             <c:when test="${not empty user}">
-                                <a href="main?action=profile&for=${post.author.username}">
+                                <a href="main?action=ticker&for=${post.author.username}">
                                 ${post.author.username}
                                 </a>
                             </c:when>

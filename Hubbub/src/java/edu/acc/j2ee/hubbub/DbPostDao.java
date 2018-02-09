@@ -64,4 +64,49 @@ public class DbPostDao {
             if (conn != null) conn.close();
         } catch (SQLException sqle) {}
     }
+
+    public List<Post> search(String[] terms) {
+        List<Post> results = new ArrayList<>();
+        if (terms.length < 1) return results;
+        String sql = "SELECT * FROM posts WHERE UPPER(content) LIKE UPPER(";
+        for (int i = 0; i < terms.length - 1; i++)
+            sql += "'%" + terms[i] + "%') AND UPPER(content) LIKE UPPER(";
+        sql += "'%" + terms[terms.length - 1] + "%')";
+        try (Statement stat = conn.createStatement();
+             ResultSet rs = stat.executeQuery(sql)) {
+            while (rs.next()) {
+                Post result = new Post();
+                User author = users.getUserByUsername(rs.getString("author"));
+                result.setAuthor(author);
+                result.setContent(rs.getString("content"));
+                result.setPosted(rs.getTimestamp("posted").toLocalDateTime());
+                result.setId(rs.getInt("id"));
+                results.add(result);
+            }
+            return results;
+        } catch (SQLException sqle) {
+            throw new RuntimeException(sqle);
+        }
+    }
+
+    List<Post> getPostsByUsername(String whoFor) {
+        String sql = "SELECT * FROM posts WHERE author='" + whoFor + "' ORDER BY posted DESC";
+        List<Post> posts = new ArrayList<>();
+        try (Statement stat = conn.createStatement();
+             ResultSet rs = stat.executeQuery(sql)) {
+            User author = users.getUserByUsername(whoFor);
+            while (rs.next()) {
+                Post post = new Post();
+                post.setAuthor(author);
+                post.setContent(rs.getString("content"));
+                post.setPosted(rs.getTimestamp("posted").toLocalDateTime());
+                post.setId(rs.getInt("id"));
+                posts.add(post);
+            }
+        }
+        catch (SQLException sqle) {
+            throw new RuntimeException(sqle);
+        }
+        return posts;
+    }
 }

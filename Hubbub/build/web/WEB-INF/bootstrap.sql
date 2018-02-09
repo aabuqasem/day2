@@ -1,4 +1,5 @@
 -- WIPE OLD DATA AND START FRESH
+DROP TABLE PROFILES;
 DROP TABLE POSTS;
 DROP TABLE USERS;
 
@@ -15,6 +16,15 @@ CREATE TABLE posts (
 	id      INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY
 );
 
+CREATE TABLE profiles (
+        owner CHAR(12) REFERENCES users(username),
+        first_name VARCHAR(20),
+        last_name VARCHAR(30),
+        email VARCHAR(100),
+        biography VARCHAR(500),
+        id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY
+);
+
 -- POPULATE THE TABLES WITH SOME INITIAL DATA
 INSERT INTO USERS VALUES
 	('johndoe',  'P@ssw0rd', '2017-05-09'),
@@ -28,4 +38,8 @@ INSERT INTO POSTS (author,content,posted) VALUES
 	('johndoe',  'Let''s recruit more friends, Jill.', '2017-11-29 02:51:18.656'),
 	('jilljack', 'I''ll reach out to Jane.', '2017-11-29 07:03:05.123'),
 	('janedoe',  'Alright guys, I''ve signed up. Now what?', '2018-01-13 6:30:45.888');
- 
+
+INSERT INTO PROFILES (owner,first_name,last_name,email,biography) VALUES 
+        ('johndoe', 'John', 'Doe', 'johndoe@morgue.info', NULL),
+        ('janedoe', 'Jane', 'Doe', NULL, 'I sometimes hang with John Doe'),
+        ('jilljack', NULL, NULL, 'jilljack@pailowater.net', NULL);

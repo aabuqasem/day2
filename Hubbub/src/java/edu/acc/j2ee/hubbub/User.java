@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import edu.acc.j2ee.validation.*;
 
 public class User extends ValidatedDomain implements Serializable {
+    public static String USER_PATTERN = "\\w{6,12}";
+    
     private String username;
     private String password;
     private LocalDate joined;
@@ -50,7 +52,7 @@ public class User extends ValidatedDomain implements Serializable {
 
     @Override
     protected void validate() throws ValidationException {
-        if (!username.matches("\\w{6,12}"))
+        if (!username.matches(USER_PATTERN))
             addError("username", username, "must be 6-12 characters including letters, numbers, and underscores");
         if (!password.matches(".{8,20}"))
             addError("password", password, "must be 8-20 characters long");
