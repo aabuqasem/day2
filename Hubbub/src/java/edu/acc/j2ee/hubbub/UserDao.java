@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class UserDao {
     private final List<User> users = new ArrayList<>();
 

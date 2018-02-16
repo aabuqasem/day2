@@ -16,6 +16,7 @@
         <c:choose>
             <c:when test="${not empty user}">
                 <a href="main?action=post">Post Yer Feelin's</a> |
+                <a href="main?action=profile&for=${user.username}">View or Update My Profile</a> |
                 <a href="main?action=logout">Log out of Hubbub</a>
                 <p>
                     <form method="GET" action="main">

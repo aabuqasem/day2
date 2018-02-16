@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class PostDao {
     private final List<Post> posts = new ArrayList<>();
     

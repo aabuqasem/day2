@@ -9,6 +9,12 @@
         <div class="masthead">
             <img src="images/hubbub-logo.png"/>
         </div>
+        <p>
+            <a href="main?action=profile&for=${user.username}">View or Edit My Profile</a> |
+            <a href="main?action=ticker&for=${user.username}">Go to my Ticker</a> |
+            <a href="main?action=timeline">Go back to the Timeline</a> |
+            <a href="main?action=logout">Log out of Hubbub&trade;</a>
+        </p>
         <h1>What are you hackin' on today?</h1>
         <c:if test="${not empty flash}">
         <h2 class="flash">${flash}</h2>

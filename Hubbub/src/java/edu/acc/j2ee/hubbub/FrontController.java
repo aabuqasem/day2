@@ -24,6 +24,8 @@ public class FrontController extends HttpServlet {
             case "post": destination = post(request); break;
             case "search": destination = search(request); break;
             case "ticker": destination = ticker(request); break;
+            case "profile": destination = profile(request); break;
+            case "follow": destination = follow(request); break;
             default: destination = timeline(request); break;
         }
         
@@ -101,6 +103,8 @@ public class FrontController extends HttpServlet {
             user = users.register(user);
             if (user == null) {
                 request.setAttribute("flash", "That username is unavailable");
+                request.setAttribute("user", user);
+                request.setAttribute("profile", profile);
                 return "join";
             } else {
                 DbProfileDao profiles = getProfileDao();
@@ -108,7 +112,9 @@ public class FrontController extends HttpServlet {
                 profile = profiles.add(profile);
                 if (profile == null) {
                     request.setAttribute("flash", "Unable to save your profile");
-                    return timeline(request);
+                    request.setAttribute("user", user);
+                    request.setAttribute("profile", profile);
+                    return "join";
                 }
                 request.getSession().setAttribute("user", user);
                 return timeline(request);                
@@ -222,6 +228,72 @@ public class FrontController extends HttpServlet {
         request.setAttribute("for", whoFor);
         return "ticker";
      }
+
+    private String profile(HttpServletRequest request) {
+        if (request.getSession().getAttribute("user") == null)
+            return timeline(request);
+        String target = request.getParameter("for");
+        if (!target.matches(User.USER_PATTERN) ||
+                getUserDao().getUserByUsername(target) == null){
+            request.setAttribute("flash", "No such Hubbub User");
+            return "profile";
+        }
+        DbProfileDao profiles = getProfileDao();
+        if (request.getMethod().equalsIgnoreCase("GET")) {
+            Profile profile = profiles.getProfileFor(target);
+            request.setAttribute("profile", profile);
+            return "profile";
+        } else {
+            User user = (User)request.getSession().getAttribute("user");
+            if (!user.getUsername().equals(target)) {
+                Profile profile = profiles.getProfileFor(target);
+                request.setAttribute("profile", profile);
+                return "profile";
+            }
+            Profile profile = new Profile();
+            profile.setOwner(user);
+            profile.setBiography(request.getParameter("biography"));
+            profile.setEmail(request.getParameter("email"));
+            profile.setFirstName(request.getParameter("firstName"));
+            profile.setLastName(request.getParameter("lastName"));
+            
+            profile.validate(false);
+            if (profile.hasErrors()) {
+                request.setAttribute("flash", "Please correct any field errors");
+                request.setAttribute("profile", profile);
+                return "profile";
+            }
+        
+            profile = profiles.updateProfile(profile);
+            if (profile == null)
+                request.setAttribute("flash", "Could not update profile");
+            else
+                request.setAttribute("success", "Your profile has been duly updated.");
+            request.setAttribute("profile", profile);
+            return "profile";
+        }
+    }
+
+    private String follow(HttpServletRequest request) {
+        if (request.getSession().getAttribute("user") == null)
+            return timeline(request);
+        String subject = request.getParameter("subject");
+        if (!subject.matches(User.USER_PATTERN) || 
+             getUserDao().getUserByUsername(subject) == null) {
+            request.setAttribute("flash", "No such Hubbub User");
+            request.setAttribute("for", subject);
+            return ticker(request);
+        }
+        User user = (User)request.getSession().getAttribute("user");
+        if (user.getUsername().equalsIgnoreCase(subject)) {
+            request.setAttribute("flash", "You cannot follow yerself, Silly!");
+            request.setAttribute("for", subject);
+            return ticker(request);
+        }
+        User target = getUserDao().getUserByUsername(subject);
+        // TODO: add proper following stuff
+        return timeline(request);
+    }
 
 
 }

@@ -10,7 +10,9 @@
             <img src="images/hubbub-logo.png"/>
         </div>
         <a href="main?action=post">Post Yer Feelin's</a> |
+        <a href="main?action=profile&for=${for}">View or Update ${for}'s Profile</a> |
         <a href="main?action=timeline">Go back to the Timeline</a> |
+        <a href="main?action=follow&subject=${for}">Start following ${for}</a> |
         <a href="main?action=logout">Log out of Hubbub</a>
         <p>
             <form method="GET" action="main">
